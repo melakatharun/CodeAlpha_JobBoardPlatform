@@ -10,25 +10,29 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+from datetime import timedelta
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-=dbepc&zp%3wx^69to=cn(w60*s5t@%xzhe8!9y)g&1*r@2xbq"
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
+# -------------------------------------------------------------------
 # Application definition
+# -------------------------------------------------------------------
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -38,17 +42,23 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    'rest_framework',
-    'rest_framework_simplejwt',
+    "rest_framework",
+    "rest_framework_simplejwt",
 
-    'accounts',
-    'jobs',
-    'applications',
-    'notifications',
+    "accounts",
+    "jobs",
+    "applications",
+    "notifications",
 ]
+
+
+# -------------------------------------------------------------------
+# Middleware
+# -------------------------------------------------------------------
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -57,7 +67,17 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+# -------------------------------------------------------------------
+# URLs
+# -------------------------------------------------------------------
+
 ROOT_URLCONF = "config.urls"
+
+
+# -------------------------------------------------------------------
+# Templates
+# -------------------------------------------------------------------
 
 TEMPLATES = [
     {
@@ -74,11 +94,17 @@ TEMPLATES = [
     },
 ]
 
+
+# -------------------------------------------------------------------
+# WSGI
+# -------------------------------------------------------------------
+
 WSGI_APPLICATION = "config.wsgi.application"
 
 
+# -------------------------------------------------------------------
 # Database
-# https://docs.djangoproject.com/en/6.1/ref/settings/#databases
+# -------------------------------------------------------------------
 
 DATABASES = {
     "default": {
@@ -88,8 +114,9 @@ DATABASES = {
 }
 
 
+# -------------------------------------------------------------------
 # Password validation
-# https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
+# -------------------------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -107,8 +134,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# -------------------------------------------------------------------
 # Internationalization
-# https://docs.djangoproject.com/en/6.1/topics/i18n/
+# -------------------------------------------------------------------
 
 LANGUAGE_CODE = "en-us"
 
@@ -119,20 +147,29 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.1/howto/static-files/
+# -------------------------------------------------------------------
+# Static files
+# -------------------------------------------------------------------
 
 STATIC_URL = "static/"
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
+
+# -------------------------------------------------------------------
 # Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
+# -------------------------------------------------------------------
 
 MAILERS = {
     "default": {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+
+# -------------------------------------------------------------------
+# Django REST Framework
+# -------------------------------------------------------------------
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -142,7 +179,11 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.AllowAny",
     ],
 }
-from datetime import timedelta
+
+
+# -------------------------------------------------------------------
+# JWT
+# -------------------------------------------------------------------
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),
