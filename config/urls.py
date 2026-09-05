@@ -1,4 +1,4 @@
-```python
+
 """
 URL configuration for config project.
 """
