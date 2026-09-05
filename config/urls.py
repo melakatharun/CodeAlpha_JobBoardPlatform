@@ -1,11 +1,10 @@
-
 """
 URL configuration for config project.
 """
 
 from django.contrib import admin
 from django.http import JsonResponse
-from django.urls import path, include
+from django.urls import include, path
 
 
 def home(request):
@@ -18,7 +17,7 @@ def home(request):
             "applications": "/api/applications/",
             "notifications": "/api/notifications/",
             "admin": "/admin/",
-        }
+        },
     })
 
 
@@ -30,4 +29,3 @@ urlpatterns = [
     path("api/applications/", include("applications.urls")),
     path("api/notifications/", include("notifications.urls")),
 ]
-```
